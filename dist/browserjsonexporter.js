@@ -98,7 +98,7 @@ var browserjsonExporterClass = function () {
             var self = this;
             return new Promise(function (resolve, reject) {
                 if (!self.support()) {
-                    reject(100, "This Web Browser is Unsupported");
+                    reject(new Error("This Web Browser is Unsupported"));
                     return;
                 }
                 var input = document.createElement('input');
@@ -106,12 +106,12 @@ var browserjsonExporterClass = function () {
                 input.accept = "application/json";
                 input.onchange = function (event) {
                     if (typeof event.target.files === "undefined" || event.target.files.length > 1) {
-                        reject(200, "Invaild Upload Type");
+                        reject(new Error("Invaild Upload Type"));
                         return;
                     }
                     var file = event.target.files[0];
                     if (typeof file === "undefined" || file.type !== "application/json") {
-                        reject(201, "Invaild Upload File");
+                        reject(new Error("Invaild Upload File"));
                         return;
                     }
                     var reader = new FileReader();
@@ -120,7 +120,7 @@ var browserjsonExporterClass = function () {
                             var jsobject = JSON.parse(reader.result);
                             resolve(jsobject);
                         } catch (e) {
-                            reject(300, "JSON Parse Error - " + e);
+                            reject(e);
                         }
                     };
                     reader.readAsText(file);
@@ -146,11 +146,11 @@ var browserjsonExporterClass = function () {
             var self = this;
             return new Promise(function (resolve, reject) {
                 if (!self.support()) {
-                    reject(100, "This Web Browser is Unsupported");
+                    reject(new Error("This Web Browser is Unsupported"));
                     return;
                 }
                 if (typeof jsobject === "undefined") {
-                    throw new TypeError("Javascript Object is undefined");
+                    reject(new TypeError("Javascript Object is undefined"));
                     return;
                 }
                 var jsonData = JSON.stringify(jsobject, null, 4);
@@ -176,7 +176,9 @@ exports.default = browserJsonExporterClass;
 
 //for <script>
 
-window.browserJsonExporter = browserJsonExporterClass;
+if (window) {
+    window.browserJsonExporter = browserJsonExporterClass;
+}
 module.exports = exports["default"];
 
 /***/ })
