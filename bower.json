@@ -1,0 +1,16 @@
+{
+    "name": "browser-json-exporter",
+    "version": "0.1.0",
+    "main": [
+      "dist/browserjsonexporter.min.js"
+    ],
+    "ignore": [
+      "node_modules"
+    ],
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com:potproject/browser-json-exporter"
+    }
+  }
+  
